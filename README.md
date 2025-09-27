@@ -1,4 +1,4 @@
-# Student Eligibility Chatbot 🎓
+# Scholaro-ChatBot 🎓
 
 A comprehensive chatbot-based system that helps students identify colleges and scholarships they are eligible for based on their academic percentage and other criteria.
 
@@ -31,7 +31,7 @@ The system uses a predefined dataset of colleges and scholarships stored in Mong
 ## 📁 Project Structure
 
 ```
-student-eligibility-chatbot/
+Scholaro-ChatBot/
 ├── README.md
 ├── .gitignore
 ├── backend/                 # Node.js Backend API
@@ -65,8 +65,8 @@ student-eligibility-chatbot/
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd student-eligibility-chatbot
+git clone https://github.com/sanjanb/Scholaro-ChatBot.git
+cd Scholaro-ChatBot
 ```
 
 ### 2. Backend Setup
@@ -363,7 +363,7 @@ For support and questions:
 
 ## 📞 Contact
 
-For any queries or suggestions, please reach out through:
+For any queries and suggestions, please reach out through:
 - GitHub Issues
 - Email: [your-email@example.com]
 - LinkedIn: [Your LinkedIn Profile]
@@ -374,8 +374,8 @@ For any queries or suggestions, please reach out through:
 
 ```bash
 # Complete setup in one go (after installing prerequisites)
-git clone <repository-url>
-cd student-eligibility-chatbot
+git clone https://github.com/sanjanb/Scholaro-ChatBot.git
+cd Scholaro-ChatBot
 cd backend && npm install && cd ../database && node sample-data.js && cd ../backend && npm start
 ```
 
