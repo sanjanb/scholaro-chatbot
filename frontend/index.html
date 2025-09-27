@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Eligibility Chatbot</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Student Eligibility Assistant</h1>
+                <p>Find colleges and scholarships based on your academic performance</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            <i class="fas fa-robot"></i>
+                            <div class="text">
+                                <p>👋 Welcome! I'm your Student Eligibility Assistant.</p>
+                                <p>I can help you find colleges and scholarships based on your academic percentage and other criteria.</p>
+                                <p>Please fill out the form below to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-form-container">
+                    <div class="student-form" id="studentForm">
+                        <h3><i class="fas fa-user-graduate"></i> Your Academic Details</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group required">
+                                <label for="percentage">Academic Percentage *</label>
+                                <input type="number" id="percentage" min="0" max="100" step="0.01" placeholder="e.g., 85.5" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="stream">Stream/Field</label>
+                                <select id="stream">
+                                    <option value="">Select Stream (Optional)</option>
+                                    <option value="Science">Science</option>
+                                    <option value="Commerce">Commerce</option>
+                                    <option value="Arts">Arts</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Medical">Medical</option>
+                                    <option value="Law">Law</option>
+                                    <option value="Management">Management</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select id="category">
+                                    <option value="General">General</option>
+                                    <option value="OBC">OBC</option>
+                                    <option value="SC">SC</option>
+                                    <option value="ST">ST</option>
+                                    <option value="EWS">EWS</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="educationLevel">Education Level</label>
+                                <select id="educationLevel">
+                                    <option value="10th">10th Grade</option>
+                                    <option value="12th" selected>12th Grade</option>
+                                    <option value="Undergraduate">Undergraduate</option>
+                                    <option value="Postgraduate">Postgraduate</option>
+                                    <option value="Doctorate">Doctorate</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="state">Preferred State</label>
+                                <input type="text" id="state" placeholder="e.g., Maharashtra, Delhi (Optional)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="familyIncome">Family Income (Annual)</label>
+                                <input type="number" id="familyIncome" placeholder="e.g., 500000 (Optional)">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" min="15" max="30" placeholder="e.g., 18 (Optional)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender">
+                                    <option value="All">All</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <i class="fas fa-search"></i>
+                            Find My Opportunities
+                        </button>
+                    </div>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Finding your opportunities...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Student Eligibility Chatbot. Built to help students find their perfect opportunities.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
