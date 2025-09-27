@@ -2,11 +2,11 @@
 
 A comprehensive chatbot-based system that helps students identify colleges and scholarships they are eligible for based on their academic percentage and other criteria.
 
-## 📋 Problem Statement
+## Problem Statement
 
 Students often struggle to identify which **colleges** and **scholarships** they are eligible for based on their academic percentage. The information is scattered across multiple sources, and eligibility criteria vary by institution and program. As a result, students spend significant time researching and may miss out on potential opportunities.
 
-## 🚀 Solution
+## Solution
 
 This chatbot-based system allows students to simply input their **percentage (and optionally other details like stream, category, or location)**, and the system instantly provides:
 
@@ -15,7 +15,7 @@ This chatbot-based system allows students to simply input their **percentage (an
 
 The system uses a predefined dataset of colleges and scholarships stored in MongoDB with comprehensive eligibility criteria, ensuring a **simple, accessible, and interactive way** for students to explore their opportunities.
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -28,7 +28,7 @@ The system uses a predefined dataset of colleges and scholarships stored in Mong
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Scholaro-ChatBot/
@@ -54,7 +54,7 @@ Scholaro-ChatBot/
 └── docs/                  # Documentation
 ```
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 
@@ -87,6 +87,7 @@ cp .env.example .env   # macOS/Linux
 ```
 
 **Environment Variables (.env):**
+
 ```env
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/student-eligibility-db
@@ -129,9 +130,10 @@ npx serve .                  # Node.js serve package
 
 Access the frontend at `http://localhost:8000`
 
-## 🔧 API Documentation
+## API Documentation
 
 ### Base URL
+
 ```
 http://localhost:5000/api
 ```
@@ -139,11 +141,13 @@ http://localhost:5000/api
 ### Endpoints
 
 #### 1. Chatbot Query
+
 **POST** `/chatbot/query`
 
 Query the chatbot for eligible colleges and scholarships.
 
 **Request Body:**
+
 ```json
 {
   "percentage": 85,
@@ -158,6 +162,7 @@ Query the chatbot for eligible colleges and scholarships.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -175,11 +180,13 @@ Query the chatbot for eligible colleges and scholarships.
 ```
 
 #### 2. Get Colleges
+
 **GET** `/colleges`
 
 Get paginated list of all colleges with optional filters.
 
 **Query Parameters:**
+
 - `page` - Page number (default: 1)
 - `limit` - Items per page (default: 10)
 - `state` - Filter by state
@@ -187,11 +194,13 @@ Get paginated list of all colleges with optional filters.
 - `type` - Filter by college type
 
 #### 3. Get Scholarships
+
 **GET** `/scholarships`
 
 Get paginated list of all scholarships with optional filters.
 
 **Query Parameters:**
+
 - `page` - Page number (default: 1)
 - `limit` - Items per page (default: 10)
 - `provider` - Filter by provider
@@ -199,20 +208,23 @@ Get paginated list of all scholarships with optional filters.
 - `category` - Filter by category
 
 #### 4. Search Colleges
+
 **POST** `/colleges/search`
 
 Search colleges by eligibility criteria.
 
 #### 5. Search Scholarships
+
 **POST** `/scholarships/search`
 
 Search scholarships by eligibility criteria.
 
-## 📊 Sample Data
+## Sample Data
 
 The system comes with pre-populated sample data including:
 
 ### Colleges (5 institutions)
+
 - **IIT Delhi** - Engineering programs
 - **St. Stephen's College, Delhi** - Arts & Commerce
 - **Government Medical College, Mumbai** - Medical programs
@@ -220,6 +232,7 @@ The system comes with pre-populated sample data including:
 - **Presidency College, Chennai** - Science & Arts
 
 ### Scholarships (7 schemes)
+
 - **National Merit Scholarship** - Government merit-based
 - **SC/ST Scholarship Scheme** - Category-based support
 - **Inspire Scholarship** - Science students
@@ -228,47 +241,57 @@ The system comes with pre-populated sample data including:
 - **Minority Community Support** - Community-based
 - **Engineering Excellence Award** - State-specific
 
-## 💻 Usage Examples
+## Usage Examples
 
 ### Example 1: High-performing Science Student
+
 **Input:**
+
 - Percentage: 90%
 - Stream: Science
 - Category: General
 
 **Expected Results:**
+
 - IIT Delhi (Engineering courses)
 - Government Medical College (MBBS)
 - National Merit Scholarship
 - Inspire Scholarship for Science Students
 
 ### Example 2: Commerce Student with Economic Background
+
 **Input:**
+
 - Percentage: 75%
 - Stream: Commerce
 - Category: General
 - Family Income: ₹3,00,000
 
 **Expected Results:**
+
 - St. Stephen's College (Economics)
 - National Merit Scholarship
 - Various need-based scholarships
 
 ### Example 3: SC Category Engineering Aspirant
+
 **Input:**
+
 - Percentage: 65%
 - Stream: Engineering
 - Category: SC
 
 **Expected Results:**
+
 - IIT Delhi (with relaxed cutoffs)
 - Lovely Professional University
 - SC/ST Scholarship Scheme
 - National Merit Scholarship
 
-## 🔍 Features
+## Features
 
 ### Core Features
+
 - ✅ **Intelligent Matching** - Matches students with eligible colleges and scholarships
 - ✅ **Multi-criteria Filtering** - Percentage, stream, category, location, income
 - ✅ **Interactive Chatbot Interface** - User-friendly conversation flow
@@ -276,15 +299,17 @@ The system comes with pre-populated sample data including:
 - ✅ **Responsive Design** - Works on desktop and mobile devices
 
 ### Advanced Features
+
 - ✅ **Category-wise Cutoffs** - Different eligibility for General/OBC/SC/ST
 - ✅ **Income-based Filtering** - Family income consideration for scholarships
 - ✅ **State-wise Preferences** - Location-based college recommendations
 - ✅ **Real-time Results** - Instant matching and display
 - ✅ **Detailed Information** - Fees, duration, contact details, rankings
 
-## 📈 Future Enhancements
+## Future Enhancements
 
 ### Phase 2 Features
+
 - [ ] **User Authentication** - Personal profiles and saved searches
 - [ ] **Application Tracking** - Track application status
 - [ ] **Notification System** - Deadline reminders and updates
@@ -292,37 +317,46 @@ The system comes with pre-populated sample data including:
 - [ ] **Advanced Analytics** - Success rate tracking and recommendations
 
 ### Phase 3 Features
+
 - [ ] **Machine Learning** - Predictive matching based on historical data
 - [ ] **Document Management** - Upload and manage application documents
 - [ ] **Counseling Integration** - Connect with career counselors
 - [ ] **Mobile App** - Native iOS and Android applications
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
 #### 1. MongoDB Connection Error
+
 ```
 Error: connect ECONNREFUSED 127.0.0.1:27017
 ```
+
 **Solution:** Make sure MongoDB is running on your system.
 
 #### 2. CORS Error
+
 ```
 Access to fetch at 'http://localhost:5000/api/chatbot/query' from origin 'null' has been blocked by CORS policy
 ```
+
 **Solution:** Serve the frontend using a local server instead of opening the HTML file directly.
 
 #### 3. No Results Found
-**Solution:** 
+
+**Solution:**
+
 - Check if sample data is populated: `node database/sample-data.js`
 - Verify MongoDB connection
 - Check if the percentage meets minimum eligibility criteria
 
 #### 4. Backend Dependencies Error
+
 ```
 Cannot find module 'express'
 ```
+
 **Solution:** Run `npm install` in the backend directory.
 
 ## 🤝 Contributing
@@ -334,6 +368,7 @@ Cannot find module 'express'
 5. Open a Pull Request
 
 ### Development Guidelines
+
 - Follow consistent coding style
 - Add comments for complex logic
 - Test new features thoroughly
@@ -343,14 +378,15 @@ Cannot find module 'express'
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Support
+## Support
 
 For support and questions:
+
 - Create an issue on GitHub
 - Check the troubleshooting section
 - Review the API documentation
 
-## 🏆 Acknowledgments
+## Acknowledgments
 
 - Thanks to all educational institutions providing open data
 - MongoDB community for excellent documentation
@@ -361,11 +397,12 @@ For support and questions:
 
 **Built with ❤️ to help students find their perfect educational opportunities!**
 
-## 📞 Contact
+## Contact
 
 For any queries and suggestions, please reach out through:
+
 - GitHub Issues
-- Email: [your-email@example.com]
+- Email: [sanjanacharraya1234@gmail.com]
 - LinkedIn: [Your LinkedIn Profile]
 
 ---
