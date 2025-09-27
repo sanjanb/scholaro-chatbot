@@ -44,8 +44,23 @@ submitBtn.addEventListener("click", async (e) => {
       // Show bot response
       addBotMessage(data.message);
 
-      // Show detailed results
+      // Show AI insights if available
+      if (data.data.aiInsights) {
+        showAIInsights(data.data.aiInsights);
+      }
+
+      // Show detailed results with AI enhancements
       showDetailedResults(data.data);
+
+      // Show action plan if available
+      if (data.data.actionPlan) {
+        showActionPlan(data.data.actionPlan);
+      }
+
+      // Show success tips if available
+      if (data.data.successTips) {
+        showSuccessTips(data.data.successTips);
+      }
     } else {
       addBotMessage(
         `❌ Sorry, I encountered an error: ${
@@ -218,9 +233,27 @@ function showDetailedResults(data) {
 
     data.eligibleColleges.slice(0, 6).forEach((college) => {
       const courses = college.courses.map((course) => course.name).join(", ");
+
+      // AI enhancements
+      const aiScore = college.aiScore || 0;
+      const aiReasoning = college.aiReasoning || [];
+      const priority = college.recommendationPriority || "Medium";
+
       resultsHTML += `
-                <div class="result-card">
-                    <h5>${college.name}</h5>
+                <div class="result-card ${priority.toLowerCase()}-priority">
+                    <div class="card-header">
+                        <h5>${college.name}</h5>
+                        ${
+                          aiScore > 0
+                            ? `
+                            <div class="ai-score">
+                                <span class="score-badge priority-${priority.toLowerCase()}">${aiScore}</span>
+                                <small>AI Score</small>
+                            </div>
+                        `
+                            : ""
+                        }
+                    </div>
                     <p><strong>Location:</strong> ${college.location.city}, ${
         college.location.state
       }</p>
@@ -235,8 +268,28 @@ function showDetailedResults(data) {
                         ? `<p><strong>Available Courses:</strong> ${courses}</p>`
                         : ""
                     }
+                    ${
+                      aiReasoning.length > 0
+                        ? `
+                        <div class="ai-reasoning">
+                            <strong>Why this college:</strong>
+                            <ul class="reasoning-list">
+                                ${aiReasoning
+                                  .slice(0, 3)
+                                  .map((reason) => `<li>${reason}</li>`)
+                                  .join("")}
+                            </ul>
+                        </div>
+                    `
+                        : ""
+                    }
                     <div class="tags">
                         <span class="tag">${college.type}</span>
+                        ${
+                          priority !== "Medium"
+                            ? `<span class="tag priority-tag">${priority} Priority</span>`
+                            : ""
+                        }
                         ${college.courses
                           .map(
                             (course) =>
@@ -262,9 +315,26 @@ function showDetailedResults(data) {
         `;
 
     data.eligibleScholarships.slice(0, 6).forEach((scholarship) => {
+      // AI enhancements
+      const aiScore = scholarship.aiScore || 0;
+      const aiReasoning = scholarship.aiReasoning || [];
+      const priority = scholarship.recommendationPriority || "Medium";
+
       resultsHTML += `
-                <div class="result-card">
-                    <h5>${scholarship.name}</h5>
+                <div class="result-card ${priority.toLowerCase()}-priority">
+                    <div class="card-header">
+                        <h5>${scholarship.name}</h5>
+                        ${
+                          aiScore > 0
+                            ? `
+                            <div class="ai-score">
+                                <span class="score-badge priority-${priority.toLowerCase()}">${aiScore}</span>
+                                <small>AI Score</small>
+                            </div>
+                        `
+                            : ""
+                        }
+                    </div>
                     <p><strong>Provider:</strong> ${scholarship.provider}</p>
                     <p><strong>Type:</strong> ${scholarship.type}</p>
                     <p><strong>Amount:</strong> ₹${scholarship.amount.value.toLocaleString()} (${
@@ -275,9 +345,29 @@ function showDetailedResults(data) {
                         ? `<p><strong>Min. Percentage:</strong> ${scholarship.eligibilityCriteria.academicPercentage.minimum}%</p>`
                         : ""
                     }
+                    ${
+                      aiReasoning.length > 0
+                        ? `
+                        <div class="ai-reasoning">
+                            <strong>Why this scholarship:</strong>
+                            <ul class="reasoning-list">
+                                ${aiReasoning
+                                  .slice(0, 3)
+                                  .map((reason) => `<li>${reason}</li>`)
+                                  .join("")}
+                            </ul>
+                        </div>
+                    `
+                        : ""
+                    }
                     <div class="tags">
                         <span class="tag">${scholarship.provider}</span>
                         <span class="tag">${scholarship.type}</span>
+                        ${
+                          priority !== "Medium"
+                            ? `<span class="tag priority-tag">${priority} Priority</span>`
+                            : ""
+                        }
                     </div>
                 </div>
             `;
@@ -299,7 +389,7 @@ function showDetailedResults(data) {
   resultsDiv.innerHTML = resultsHTML;
   document.querySelector(".chat-container").appendChild(resultsDiv);
 
-  // Add summary card styles
+  // Add summary card styles and AI enhancements
   const style = document.createElement("style");
   style.textContent = `
         .summary-cards {
@@ -323,6 +413,121 @@ function showDetailedResults(data) {
             color: #28a745;
             display: block;
             margin-bottom: 0.25rem;
+        }
+        
+        /* AI Enhanced Card Styles */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .card-header h5 {
+            margin: 0;
+            flex: 1;
+        }
+        
+        .ai-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 1rem;
+        }
+        
+        .score-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            min-width: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .priority-high .score-badge, .score-badge.priority-high {
+            background: #28a745;
+        }
+        
+        .priority-medium .score-badge, .score-badge.priority-medium {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .priority-low .score-badge, .score-badge.priority-low {
+            background: #6c757d;
+        }
+        
+        .ai-score small {
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+            opacity: 0.7;
+        }
+        
+        .ai-reasoning {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            border-left: 3px solid #007bff;
+        }
+        
+        .reasoning-list {
+            margin: 0.5rem 0 0 0;
+            padding-left: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .reasoning-list li {
+            margin-bottom: 0.25rem;
+            color: #666;
+        }
+        
+        .priority-tag {
+            background: #007bff !important;
+            color: white !important;
+        }
+        
+        .high-priority {
+            border-left: 4px solid #28a745;
+        }
+        
+        .medium-priority {
+            border-left: 4px solid #ffc107;
+        }
+        
+        .low-priority {
+            border-left: 4px solid #6c757d;
+        }
+        
+        .result-card {
+            position: relative;
+        }
+        
+        .high-priority::before {
+            content: "🎯";
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .medium-priority::before {
+            content: "📋";
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .low-priority::before {
+            content: "📝";
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            font-size: 1.2rem;
         }
     `;
   document.head.appendChild(style);
@@ -357,3 +562,188 @@ document
       }
     });
   });
+
+// Show AI insights
+function showAIInsights(aiInsights) {
+  if (!aiInsights) return;
+
+  const insightsDiv = document.createElement("div");
+  insightsDiv.className = "ai-insights";
+
+  let insightsHTML = `
+    <div class="ai-section">
+      <h4>
+        <i class="fas fa-robot"></i> 
+        ${aiInsights.isAIGenerated ? "AI-Powered Analysis" : "Smart Analysis"}
+        ${aiInsights.isAIGenerated ? '<span class="ai-badge">AI</span>' : ""}
+      </h4>
+      <div class="ai-analysis">
+        ${formatAIAnalysis(aiInsights.analysis)}
+      </div>
+      <div class="ai-timestamp">
+        <small><i class="fas fa-clock"></i> Generated: ${new Date(
+          aiInsights.timestamp
+        ).toLocaleString()}</small>
+      </div>
+    </div>
+  `;
+
+  insightsDiv.innerHTML = insightsHTML;
+  document.querySelector(".chat-container").appendChild(insightsDiv);
+
+  // Add AI-specific styles
+  if (!document.querySelector("#ai-styles")) {
+    const style = document.createElement("style");
+    style.id = "ai-styles";
+    style.textContent = `
+      .ai-insights {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        margin: 1rem 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+      }
+      
+      .ai-section {
+        padding: 1.5rem;
+        color: white;
+      }
+      
+      .ai-section h4 {
+        margin: 0 0 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.2rem;
+      }
+      
+      .ai-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.2rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: bold;
+      }
+      
+      .ai-analysis {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 8px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      
+      .ai-timestamp {
+        margin-top: 1rem;
+        opacity: 0.8;
+      }
+      
+      .action-plan, .success-tips {
+        margin: 1rem 0;
+        background: #f8f9fa;
+        border-radius: 8px;
+        overflow: hidden;
+        border-left: 4px solid #28a745;
+      }
+      
+      .plan-section, .tips-section {
+        padding: 1.5rem;
+      }
+      
+      .plan-section h4, .tips-section h4 {
+        margin: 0 0 1rem 0;
+        color: #28a745;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .plan-list, .tips-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .plan-list li, .tips-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .plan-list li:last-child, .tips-list li:last-child {
+        border-bottom: none;
+      }
+      
+      .plan-list li::before {
+        content: "📋";
+        flex-shrink: 0;
+      }
+      
+      .tips-list li::before {
+        content: "💡";
+        flex-shrink: 0;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+// Format AI analysis text
+function formatAIAnalysis(analysis) {
+  if (!analysis) return "";
+
+  // Format the analysis text with better structure
+  return analysis
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/g, "<em>$1</em>")
+    .replace(/\n\n/g, "\n")
+    .replace(/(\d+\.\s)/g, "\n$1");
+}
+
+// Show action plan
+function showActionPlan(actionPlan) {
+  if (!actionPlan || !Array.isArray(actionPlan) || actionPlan.length === 0)
+    return;
+
+  const planDiv = document.createElement("div");
+  planDiv.className = "action-plan";
+
+  let planHTML = `
+    <div class="plan-section">
+      <h4><i class="fas fa-tasks"></i> Recommended Action Plan</h4>
+      <ul class="plan-list">
+        ${actionPlan
+          .map((item) => `<li>${item.replace(/^\d+\.\s*/, "")}</li>`)
+          .join("")}
+      </ul>
+    </div>
+  `;
+
+  planDiv.innerHTML = planHTML;
+  document.querySelector(".chat-container").appendChild(planDiv);
+}
+
+// Show success tips
+function showSuccessTips(successTips) {
+  if (!successTips || !Array.isArray(successTips) || successTips.length === 0)
+    return;
+
+  const tipsDiv = document.createElement("div");
+  tipsDiv.className = "success-tips";
+
+  let tipsHTML = `
+    <div class="tips-section">
+      <h4><i class="fas fa-lightbulb"></i> Success Tips</h4>
+      <ul class="tips-list">
+        ${successTips.map((tip) => `<li>${tip}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+
+  tipsDiv.innerHTML = tipsHTML;
+  document.querySelector(".chat-container").appendChild(tipsDiv);
+}
