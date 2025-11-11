@@ -270,7 +270,7 @@ const sampleScholarships = [
   },
   {
     name: "State Excellence Scholarship",
-    provider: "State Government",
+    provider: "Government",
     type: "Merit-based",
     amount: { value: 60000, currency: "INR", type: "Annual" },
     eligibilityCriteria: {
