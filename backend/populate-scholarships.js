@@ -231,7 +231,7 @@ const sampleScholarships = [
   },
   {
     name: "OBC Merit Scholarship",
-    provider: "Government of India",
+    provider: "Government",
     type: "Category-based",
     amount: { value: 40000, currency: "INR", type: "Annual" },
     eligibilityCriteria: {
