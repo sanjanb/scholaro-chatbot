@@ -9,7 +9,7 @@ const MONGODB_URI =
 const sampleScholarships = [
   {
     name: "National Merit Scholarship",
-    provider: "Government of India",
+    provider: "Government",
     type: "Merit-based",
     amount: { value: 50000, currency: "INR", type: "Annual" },
     eligibilityCriteria: {
@@ -45,7 +45,7 @@ const sampleScholarships = [
   },
   {
     name: "SC/ST Scholarship Scheme",
-    provider: "Ministry of Social Justice",
+    provider: "Government",
     type: "Category-based",
     amount: { value: 30000, currency: "INR", type: "Annual" },
     eligibilityCriteria: {
