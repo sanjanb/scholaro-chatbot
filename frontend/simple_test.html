@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .college {
+        background: #f0f0f0;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 5px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+      #results {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Simple College Test</h1>
+    <button onclick="fetchColleges()">Fetch Colleges</button>
+    <div id="results"></div>
+
+    <script>
+      async function fetchColleges() {
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "<p>Loading...</p>";
+
+        try {
+          const response = await fetch(
+            "http://localhost:8002/api/chatbot/query",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                percentage: 85,
+                stream: "Engineering",
+                category: "General",
+                educationLevel: "12th",
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Response:", data);
+
+          if (data.success && data.data && data.data.eligibleColleges) {
+            const colleges = data.data.eligibleColleges;
+            let html = `<h2>Found ${colleges.length} colleges:</h2>`;
+
+            colleges.forEach((college) => {
+              html += `
+                            <div class="college">
+                                <h3>${college.name}</h3>
+                                <p><strong>Location:</strong> ${
+                                  college.location.city
+                                }, ${college.location.state}</p>
+                                <p><strong>Type:</strong> ${college.type}</p>
+                                <p><strong>Courses:</strong> ${college.courses
+                                  .map((c) => c.name)
+                                  .join(", ")}</p>
+                            </div>
+                        `;
+            });
+
+            resultsDiv.innerHTML = html;
+          } else {
+            resultsDiv.innerHTML = `<p>Error: ${
+              data.message || "No colleges found"
+            }</p>`;
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          resultsDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -44,6 +44,12 @@ submitBtn.addEventListener("click", async (e) => {
       // Show bot response
       addBotMessage(data.message);
 
+      // Debug logging
+      console.log("Full API Response:", data);
+      console.log("Data.data:", data.data);
+      console.log("Eligible Colleges:", data.data.eligibleColleges);
+      console.log("Eligible Scholarships:", data.data.eligibleScholarships);
+
       // Show AI insights if available
       if (data.data.aiInsights) {
         showAIInsights(data.data.aiInsights);
@@ -162,28 +168,76 @@ function addBotMessage(message) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Format bot message
+// Enhanced bot message formatting with better structure and styling
 function formatBotMessage(message) {
-  // Split by double newlines to create paragraphs
-  const paragraphs = message.split("\\n\\n");
+  // Handle different types of content
+  let formattedMessage = message;
 
-  return paragraphs
-    .map((paragraph) => {
-      // Split single newlines within paragraphs
-      const lines = paragraph.split("\\n");
-      const formattedLines = lines.map((line) => {
-        // Format bold text
-        line = line.replace(/\\*\\*(.*?)\\*\\*/g, "<strong>$1</strong>");
-        return line;
-      });
+  // Convert actual newlines to line breaks first
+  formattedMessage = formattedMessage.replace(/\n/g, "<br>");
 
-      if (formattedLines.length === 1) {
-        return `<p>${formattedLines[0]}</p>`;
-      } else {
-        return `<p>${formattedLines.join("<br>")}</p>`;
-      }
-    })
-    .join("");
+  // Format section dividers
+  formattedMessage = formattedMessage.replace(
+    /═+/g,
+    '<div class="section-divider"></div>'
+  );
+
+  // Format main section headers (STUDENT PROFILE, COLLEGE RECOMMENDATIONS, etc.)
+  formattedMessage = formattedMessage.replace(
+    /^([A-Z\s]+)(?:<br>|$)/gm,
+    '<div class="main-header"><span class="header-text">$1</span></div>'
+  );
+
+  // Format emoji headers with text
+  formattedMessage = formattedMessage.replace(
+    /^([�🎓💰🚀📊👤⭐���📈�🏫💵✨])\s*([^<]+)(?:<br>|$)/gm,
+    '<div class="emoji-header"><span class="emoji-icon">$1</span><span class="emoji-text">$2</span></div>'
+  );
+
+  // Format numbered items (colleges, scholarships)
+  formattedMessage = formattedMessage.replace(
+    /^(\d+)\.\s*([^<]+)(?:<br>|$)/gm,
+    '<div class="numbered-item"><span class="number">$1</span><span class="item-title">$2</span></div>'
+  );
+
+  // Format indented information lines (with icons)
+  formattedMessage = formattedMessage.replace(
+    /^\s+([📍💰📚💵🏢📋📅📁🎯🔄➕])\s*([^<]+)(?:<br>|$)/gm,
+    '<div class="info-item"><span class="info-icon">$1</span><span class="info-text">$2</span></div>'
+  );
+
+  // Format indented plain text items
+  formattedMessage = formattedMessage.replace(
+    /^\s+([^🎯🎓�🚀📊👤⭐🌟👍📈💪🏫💵✨�📍💰📚💵🏢📋📅📁➕•]+)(?:<br>|$)/gm,
+    '<div class="indented-text">$1</div>'
+  );
+
+  // Format bullet points
+  formattedMessage = formattedMessage.replace(
+    /^\s*•\s*([^<]+)(?:<br>|$)/gm,
+    '<div class="bullet-item"><span class="bullet">•</span><span class="bullet-text">$1</span></div>'
+  );
+
+  // Format warning sections
+  formattedMessage = formattedMessage.replace(
+    /^⚠️\s*([^<]+)(?:<br>|$)/gm,
+    '<div class="warning-box"><span class="warning-icon">⚠️</span><span class="warning-text">$1</span></div>'
+  );
+
+  // Format suggestions
+  formattedMessage = formattedMessage.replace(
+    /^💡\s*([^<]+)(?:<br>|$)/gm,
+    '<div class="suggestion-box"><span class="suggestion-icon">💡</span><span class="suggestion-text">$1</span></div>'
+  );
+
+  // Clean up extra <br> tags
+  formattedMessage = formattedMessage.replace(/<br>\s*<br>/g, "<br>");
+  formattedMessage = formattedMessage.replace(/^<br>|<br>$/g, "");
+
+  // Wrap in container
+  formattedMessage = `<div class="formatted-message">${formattedMessage}</div>`;
+
+  return formattedMessage;
 }
 
 // Show loading
@@ -200,6 +254,11 @@ function hideLoading() {
 
 // Show detailed results
 function showDetailedResults(data) {
+  // Debug logging
+  console.log("showDetailedResults called with:", data);
+  console.log("eligibleColleges:", data.eligibleColleges);
+  console.log("eligibleScholarships:", data.eligibleScholarships);
+
   // Remove existing results
   const existingResults = document.querySelector(".results");
   if (existingResults) {

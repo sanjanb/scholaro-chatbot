@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debug Test</title>
+  </head>
+  <body>
+    <h1>Debug Test</h1>
+    <button onclick="testAPI()">Test API Call</button>
+    <div
+      id="results"
+      style="
+        margin-top: 20px;
+        padding: 20px;
+        background: #f0f0f0;
+        white-space: pre-wrap;
+      "
+    ></div>
+
+    <script>
+      async function testAPI() {
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "Testing API...";
+
+        const testData = {
+          percentage: 85,
+          stream: "Engineering",
+          category: "General",
+          educationLevel: "12th",
+        };
+
+        try {
+          console.log("Making API call with:", testData);
+
+          const response = await fetch(
+            "http://localhost:8002/api/chatbot/query",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(testData),
+            }
+          );
+
+          console.log("Response status:", response.status);
+          console.log("Response headers:", response.headers);
+
+          const data = await response.json();
+
+          console.log("Response data:", data);
+
+          resultsDiv.innerHTML = `
+Status: ${response.status}
+Success: ${data.success}
+Message: ${data.message}
+Colleges Found: ${data.data?.eligibleColleges?.length || 0}
+Scholarships Found: ${data.data?.eligibleScholarships?.length || 0}
+
+Full Response:
+${JSON.stringify(data, null, 2)}
+                `;
+        } catch (error) {
+          console.error("Error:", error);
+          resultsDiv.innerHTML = `Error: ${error.message}\n\nStack: ${error.stack}`;
+        }
+      }
+    </script>
+  </body>
+</html>
