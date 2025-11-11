@@ -81,7 +81,7 @@ const sampleScholarships = [
   },
   {
     name: "INSPIRE Scholarship for Science Students",
-    provider: "Department of Science and Technology",
+    provider: "Government",
     type: "Merit-based",
     amount: { value: 80000, currency: "INR", type: "Annual" },
     eligibilityCriteria: {
@@ -117,7 +117,7 @@ const sampleScholarships = [
   },
   {
     name: "Girl Child Education Grant",
-    provider: "Pratham Education Foundation",
+    provider: "NGO",
     type: "Need-based",
     amount: { value: 25000, currency: "INR", type: "Annual" },
     eligibilityCriteria: {
