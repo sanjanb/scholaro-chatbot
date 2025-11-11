@@ -153,7 +153,7 @@ const sampleScholarships = [
   },
   {
     name: "Tech Mahindra Smart Academy Scholarship",
-    provider: "Tech Mahindra Foundation",
+    provider: "Corporate",
     type: "Merit-based",
     amount: { value: 100000, currency: "INR", type: "Annual" },
     eligibilityCriteria: {
@@ -192,7 +192,7 @@ const sampleScholarships = [
   },
   {
     name: "Minority Community Scholarship",
-    provider: "Ministry of Minority Affairs",
+    provider: "Government",
     type: "Category-based",
     amount: { value: 35000, currency: "INR", type: "Annual" },
     eligibilityCriteria: {
