@@ -298,15 +298,20 @@ function generateChatbotResponse({
   // Performance assessment
   let assessment = "";
   if (percentage >= 90) {
-    assessment = "🌟 Excellent Performance! You're eligible for top-tier institutions and premium scholarships.";
+    assessment =
+      "🌟 Excellent Performance! You're eligible for top-tier institutions and premium scholarships.";
   } else if (percentage >= 80) {
-    assessment = "⭐ Very Good Performance! You have access to quality institutions and good scholarship opportunities.";
+    assessment =
+      "⭐ Very Good Performance! You have access to quality institutions and good scholarship opportunities.";
   } else if (percentage >= 70) {
-    assessment = "👍 Good Performance! Multiple college options and scholarship possibilities are available.";
+    assessment =
+      "👍 Good Performance! Multiple college options and scholarship possibilities are available.";
   } else if (percentage >= 60) {
-    assessment = "📈 Fair Performance! Focus on colleges with moderate requirements and explore need-based scholarships.";
+    assessment =
+      "📈 Fair Performance! Focus on colleges with moderate requirements and explore need-based scholarships.";
   } else {
-    assessment = "💪 Room for Improvement! Consider alternative pathways and skill-based programs.";
+    assessment =
+      "💪 Room for Improvement! Consider alternative pathways and skill-based programs.";
   }
   response += `${assessment}\n\n`;
 
@@ -314,31 +319,41 @@ function generateChatbotResponse({
   response += "══════════════════════════════════════════════════\n";
   if (eligibleColleges.length > 0) {
     response += `🎓 ELIGIBLE COLLEGES (${eligibleColleges.length} Found)\n\n`;
-    
+
     // Top colleges with detailed info
     eligibleColleges.slice(0, 5).forEach((college, index) => {
-      const rankInfo = college.ranking?.nirf ? ` 🏆 NIRF Rank ${college.ranking.nirf}` : "";
+      const rankInfo = college.ranking?.nirf
+        ? ` 🏆 NIRF Rank ${college.ranking.nirf}`
+        : "";
       const typeBadge = getCleanTypeBadge(college.type);
-      
+
       response += `${index + 1}. ${college.name}${rankInfo}\n`;
       response += `   📍 Location: ${college.location.city}, ${college.location.state}\n`;
       response += `   🏛️ Type: ${typeBadge}\n`;
-      
+
       // Course details
       if (college.courses && college.courses.length > 0) {
         const course = college.courses[0];
         if (course.fees) {
-          const totalFees = (course.fees.tuition || 0) + (course.fees.hostel || 0) + (course.fees.other || 0);
+          const totalFees =
+            (course.fees.tuition || 0) +
+            (course.fees.hostel || 0) +
+            (course.fees.other || 0);
           response += `   💰 Annual Fees: ₹${totalFees.toLocaleString()}\n`;
         }
-        const courseNames = college.courses.map(c => c.name).slice(0, 2).join(", ");
+        const courseNames = college.courses
+          .map((c) => c.name)
+          .slice(0, 2)
+          .join(", ");
         response += `   📚 Available Courses: ${courseNames}\n`;
       }
       response += "\n";
     });
-    
+
     if (eligibleColleges.length > 5) {
-      response += `   ➕ ${eligibleColleges.length - 5} more colleges available - Check detailed results below!\n\n`;
+      response += `   ➕ ${
+        eligibleColleges.length - 5
+      } more colleges available - Check detailed results below!\n\n`;
     }
   } else {
     response += `🎓 COLLEGES\n\n`;
@@ -354,47 +369,68 @@ function generateChatbotResponse({
   response += "══════════════════════════════════════════════════\n";
   if (eligibleScholarships.length > 0) {
     response += `💰 SCHOLARSHIP OPPORTUNITIES (${eligibleScholarships.length} Found)\n\n`;
-    
+
     // Group scholarships by value
-    const highValue = eligibleScholarships.filter(s => s.amount.value >= 75000);
-    const mediumValue = eligibleScholarships.filter(s => s.amount.value >= 40000 && s.amount.value < 75000);
-    const regularValue = eligibleScholarships.filter(s => s.amount.value < 40000);
-    
+    const highValue = eligibleScholarships.filter(
+      (s) => s.amount.value >= 75000
+    );
+    const mediumValue = eligibleScholarships.filter(
+      (s) => s.amount.value >= 40000 && s.amount.value < 75000
+    );
+    const regularValue = eligibleScholarships.filter(
+      (s) => s.amount.value < 40000
+    );
+
     if (highValue.length > 0) {
       response += `🌟 HIGH-VALUE SCHOLARSHIPS:\n`;
       highValue.slice(0, 3).forEach((scholarship, index) => {
         response += `   ${index + 1}. ${scholarship.name}\n`;
-        response += `      💵 Amount: ₹${scholarship.amount.value.toLocaleString()} (${scholarship.amount.type})\n`;
+        response += `      💵 Amount: ₹${scholarship.amount.value.toLocaleString()} (${
+          scholarship.amount.type
+        })\n`;
         response += `      🏢 Provider: ${scholarship.provider}\n`;
-        response += `      🎯 Type: ${getCleanScholarshipType(scholarship.type)}\n\n`;
+        response += `      🎯 Type: ${getCleanScholarshipType(
+          scholarship.type
+        )}\n\n`;
       });
     }
-    
+
     if (mediumValue.length > 0) {
       response += `⭐ GOOD SCHOLARSHIPS:\n`;
       mediumValue.slice(0, 3).forEach((scholarship, index) => {
         response += `   ${index + 1}. ${scholarship.name}\n`;
-        response += `      💵 Amount: ₹${scholarship.amount.value.toLocaleString()} (${scholarship.amount.type})\n`;
+        response += `      💵 Amount: ₹${scholarship.amount.value.toLocaleString()} (${
+          scholarship.amount.type
+        })\n`;
         response += `      🏢 Provider: ${scholarship.provider}\n`;
-        response += `      🎯 Type: ${getCleanScholarshipType(scholarship.type)}\n\n`;
+        response += `      🎯 Type: ${getCleanScholarshipType(
+          scholarship.type
+        )}\n\n`;
       });
     }
-    
-    if (regularValue.length > 0 && (highValue.length + mediumValue.length) < 5) {
-      const remaining = regularValue.slice(0, 5 - (highValue.slice(0, 3).length + mediumValue.slice(0, 3).length));
+
+    if (regularValue.length > 0 && highValue.length + mediumValue.length < 5) {
+      const remaining = regularValue.slice(
+        0,
+        5 - (highValue.slice(0, 3).length + mediumValue.slice(0, 3).length)
+      );
       if (remaining.length > 0) {
         response += `📋 ADDITIONAL SCHOLARSHIPS:\n`;
         remaining.forEach((scholarship, index) => {
           response += `   ${index + 1}. ${scholarship.name}\n`;
-          response += `      💵 Amount: ₹${scholarship.amount.value.toLocaleString()} (${scholarship.amount.type})\n`;
+          response += `      💵 Amount: ₹${scholarship.amount.value.toLocaleString()} (${
+            scholarship.amount.type
+          })\n`;
           response += `      🏢 Provider: ${scholarship.provider}\n\n`;
         });
       }
     }
-    
+
     const totalDisplayed = Math.min(6, eligibleScholarships.length);
     if (eligibleScholarships.length > totalDisplayed) {
-      response += `   ➕ ${eligibleScholarships.length - totalDisplayed} more scholarships available - Check detailed results below!\n\n`;
+      response += `   ➕ ${
+        eligibleScholarships.length - totalDisplayed
+      } more scholarships available - Check detailed results below!\n\n`;
     }
   } else {
     response += `💰 SCHOLARSHIPS\n\n`;
@@ -413,18 +449,24 @@ function generateChatbotResponse({
   response += `   1. 📋 Review detailed college and scholarship information\n`;
   response += `   2. 📅 Note down application deadlines and requirements\n`;
   response += `   3. 📁 Start collecting required documents\n\n`;
-  
+
   response += `📈 STRATEGIC APPROACH (Next 1-2 months):\n`;
-  response += `   4. 🎯 Apply to ${Math.min(eligibleColleges.length + 2, 8)} colleges (mix of safe and stretch options)\n`;
-  response += `   5. 💰 Apply for ${Math.min(eligibleScholarships.length, 6)} scholarships\n`;
+  response += `   4. 🎯 Apply to ${Math.min(
+    eligibleColleges.length + 2,
+    8
+  )} colleges (mix of safe and stretch options)\n`;
+  response += `   5. 💰 Apply for ${Math.min(
+    eligibleScholarships.length,
+    6
+  )} scholarships\n`;
   response += `   6. 🔄 Keep backup options ready\n\n`;
-  
+
   response += `✨ SUCCESS TIPS:\n`;
   response += `   • Start early - Don't wait for last minute\n`;
   response += `   • Apply to multiple options to increase chances\n`;
   response += `   • Keep all documents ready and organized\n`;
   response += `   • Follow up regularly on application status\n\n`;
-  
+
   response += `💬 Need help with specific colleges or scholarships? Just ask me!`;
 
   return response;
