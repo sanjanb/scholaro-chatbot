@@ -26,8 +26,8 @@ const sampleColleges = [
           general: 85,
           obc: 80,
           sc: 75,
-          st: 75
-        }
+          st: 75,
+        },
       },
       {
         name: "Mechanical Engineering",
@@ -45,7 +45,7 @@ const sampleColleges = [
         general: 85,
         obc: 80,
         sc: 75,
-        st: 75
+        st: 75,
       },
       entranceExam: "JEE Advanced",
     },
@@ -312,8 +312,8 @@ const sampleColleges = [
     name: "Mumbai University",
     location: {
       city: "Mumbai",
-      state: "Maharashtra", 
-      address: "Fort, Mumbai, Maharashtra 400032"
+      state: "Maharashtra",
+      address: "Fort, Mumbai, Maharashtra 400032",
     },
     type: "Government",
     establishedYear: 1857,
